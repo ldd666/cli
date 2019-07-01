@@ -6,6 +6,8 @@ const chalk = require('chalk');
 const ora = require('ora');
 const path = require('path');
 const exists = require('fs').existsSync;
+const generate = require('../lib/generator')
+
 program
     .version(require('../package').version, '-v, --version')
     .usage('<project-name>');
@@ -43,6 +45,21 @@ if (program.args) {
     })
 }
 
+process.on('exit', () => {
+    console.log()
+})
+
 function run() {
-console.log('runing......')
+    inquirer.prompt([{
+        type: 'confirm',
+        message: '是否使用axio进行数据请求？',
+        name: 'ok'
+    }]).then(answers => {
+        if (answers.ok) {
+            // 加入axios代码部分
+            generate()
+        } else {
+            // 直接编译生成
+        }
+    })
 }
