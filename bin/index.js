@@ -50,6 +50,7 @@ process.on('exit', () => {
 })
 
 function run() {
+    const plugins = new Set();
     inquirer.prompt([{
         type: 'confirm',
         message: '是否使用axio进行数据请求？',
@@ -57,9 +58,19 @@ function run() {
     }]).then(answers => {
         if (answers.ok) {
             // 加入axios代码部分
-            generate()
-        } else {
-            // 直接编译生成
-        }
+           plugins.add('axios');
+        } 
+        inquirer.prompt([{
+            type: 'confirm',
+            message: '是否使用cdn',
+            name: 'ok'
+        }]).then(answers => {
+            if (answers.ok) {
+                // 加入cdn代码部分
+            plugins.add('cdn');
+            } 
+            generate(plugins)
+        })
     })
+    
 }
