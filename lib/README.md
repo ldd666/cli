@@ -1,0 +1,1 @@
+每一个组件必须存放在packages下且必须有index.js文件
