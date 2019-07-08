@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const ora = require('ora');
 const path = require('path');
 const exists = require('fs').existsSync;
-const generate = require('../lib/generator')
+const Generate = require('../lib/generator')
 
 program
     .version(require('../package').version, '-v, --version')
@@ -29,16 +29,16 @@ help();
 
 if (program.args) {
     const rawName = program.args[0]
-    const to = path.resolve(rawName);
+    const projectPath = path.resolve(rawName);
     inquirer.prompt([{
         type: 'confirm',
-        message: exists(to) 
+        message: exists(projectPath) 
             ? 'Target directory exists. Continue?'
             : 'Generate project in current directory?',
         name: 'ok'
     }]).then(answers => {
         if (answers.ok) {
-            run()
+            run(projectPath,rawName)
         }
     }).catch(e => {
         throw new Error(e);
@@ -49,7 +49,7 @@ process.on('exit', () => {
     console.log()
 })
 
-function run() {
+function run(projectPath,projectName) {
     const plugins = new Set();
     inquirer.prompt([{
         type: 'confirm',
@@ -67,9 +67,10 @@ function run() {
         }]).then(answers => {
             if (answers.ok) {
                 // 加入cdn代码部分
-            plugins.add('cdn');
+            //plugins.add('cdn');
             } 
-            generate(plugins)
+            const generator = new Generate(plugins, projectPath, projectName)
+            generator.create();
         })
     })
     
