@@ -7,10 +7,11 @@ const path = require('path')
 const exists = require('fs').existsSync
 const Generate = require('../lib/generator')
 const execa = require('execa')
-
+const { getPromptModules } = require('../lib/prompt')
 program
   .version(require('../package').version, '-v, --version')
   .usage('<project-name>')
+  .option('-r, --registry <url>', 'Use specified npm registry when installing dependencies (only for npm)')
 
 program.on('--help', () => {
   console.log()
@@ -26,10 +27,11 @@ process.on('exit', () => {
 
 async function create () {
   program.parse(process.argv)
+
   if (program.args.length < 1) return program.help()
 
-  const rawName = program.args[0]
-  const projectPath = path.resolve(rawName)
+  const projectName = program.args[0]
+  const projectPath = path.resolve(projectName)
   const isExist = exists(projectPath)
   const { ok } = await inquirer.prompt([{
     type: 'confirm',
@@ -44,40 +46,14 @@ async function create () {
       child.on('close', code => {
       })
     }
-    run(projectPath, rawName)
+
+    inquirer.prompt(getPromptModules()).then(function (answers) {
+      console.log(answers, '========dan')
+      //const generator = new Generate(plugins, projectPath, projectName)
+      //generator.create()
+    })
   }
 }
 
 create()
 
-const plugins = new Set()
-async function run (projectPath, projectName) {
-  prompt({
-    type: 'confirm',
-    message: '是否使用axio进行数据请求？',
-    name: 'ok',
-    plugin: 'axios'
-  }, () => {
-    prompt({
-      type: 'confirm',
-      message: '是否使用qcdn',
-      name: 'ok',
-      plugin: 'qcdn'
-    }, () => {
-      const generator = new Generate(plugins, projectPath, projectName)
-      generator.create()
-    })
-  })
-}
-
-async function prompt ({ type, message, name, plugin }, callback) {
-  const { ok } = await inquirer.prompt([{
-    type: type,
-    message: message,
-    name: name
-  }])
-  if (ok) {
-    plugins.add(plugin)
-  }
-  callback && callback()
-}
