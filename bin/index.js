@@ -25,6 +25,8 @@ process.on('exit', () => {
   console.log()
 })
 
+create()
+
 async function create () {
   program.parse(process.argv)
 
@@ -46,14 +48,9 @@ async function create () {
       child.on('close', code => {
       })
     }
-
-    inquirer.prompt(getPromptModules()).then(function (answers) {
-      console.log(answers, '========dan')
-      //const generator = new Generate(plugins, projectPath, projectName)
-      //generator.create()
+    getPromptModules((presets) => {
+      const generator = new Generate(presets, projectPath, projectName)
+      generator.create()
     })
   }
 }
-
-create()
-
