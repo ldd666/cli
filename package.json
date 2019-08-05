@@ -22,6 +22,5 @@
     "inquirer": "^6.4.1"
   },
   "devDependencies": {
-    "metalsmith": "^2.3.0"
   }
 }
