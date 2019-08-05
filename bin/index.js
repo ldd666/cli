@@ -49,7 +49,6 @@ async function create () {
       })
     }
     getPromptModules((presets) => {
-      console.log(presets)
       const generator = new Generate(presets, projectPath, projectName)
       generator.create()
     })
