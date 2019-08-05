@@ -1,16 +1,20 @@
 <template>
-  <div class="home">
-    <img src="../assets/images/img.jpeg">
-    <img src="../assets/images/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <section>
+    <%if(presets.features.indexOf('com-header') > -1){%>
+    <ComHeader></ComHeader>
+    <%}%>
+  </section>
 </template>
 <script>
-import HelloWorld from '@/components/HelloWorld.vue'
+<%if(presets.features.indexOf('com-header') > -1){%>
+import ComHeader from '@/components/header.vue'
+<%}%>
 export default {
   name: 'home',
   components: {
-    HelloWorld
+    <%if(presets.features.indexOf('com-header') > -1){%>
+    ComHeader,
+    <%}%>
   }
 }
 </script>
