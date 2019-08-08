@@ -30,43 +30,52 @@
             </template>
         </el-menu>
     </div>
+    <ComLogin></ComLogin>
   </div>
 </template>
 <script>
+<%if(presets.features.indexOf('com-domain-login') > -1){%>
+import ComLogin from '@/components/login.vue'
+<%}%>
 export default {
     name: 'comheader',
     data() {
-        return {
-            defaultOpeneds: [],
-            defaultActive: '',
-            menu: [
-            {
-                title: '处理中心',
-                path: '/a' // 填写路由路径
+      return {
+        defaultOpeneds: [],
+        defaultActive: '',
+        menu: [
+        {
+            title: '处理中心',
+            path: '/a' // 填写路由路径
+        },{
+            title: '我的工作台',
+            path: '/b', // 填写路由路径
+            children: [{
+                title: '选项1',
+                path: '/b/1'
             },{
-                title: '我的工作台',
-                path: '/b', // 填写路由路径
-                children: [{
-                    title: '选项1',
-                    path: '/b/1'
-                },{
-                    title: '选项2',
-                    path: '/b/2'
-                }]
-            },{
-                title: '消息中心',
-                path: '/c' // 填写路由路径
+                title: '选项2',
+                path: '/b/2'
             }]
+        },{
+            title: '消息中心',
+            path: '/c' // 填写路由路径
+        }]
         }
     },
+    components:{
+      <%if(presets.features.indexOf('com-domain-login') > -1){%>
+      ComLogin
+      <%}%>
+    },
     methods: {   
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
-        } 
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+      }
     },
     beforeMount() {
-        this.defaultOpeneds = [this.$route.path];
-        this.defaultActive = this.$route.path;
+      this.defaultOpeneds = [this.$route.path];
+      this.defaultActive = this.$route.path;
     }
 };
 </script>

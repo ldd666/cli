@@ -13,7 +13,7 @@ export default {
   name: 'home',
   components: {
     <%if(presets.features.indexOf('com-h-header') > -1){%>
-    ComHeader,
+    ComHeader
     <%}%>
   }
 }
